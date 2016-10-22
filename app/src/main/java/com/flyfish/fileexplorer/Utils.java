@@ -1,0 +1,139 @@
+package com.flyfish.fileexplorer;
+
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * Created by gaoxuan on 2016/10/1.
+ */
+public class Utils {
+    private static HashMap<String, String> paht2NameMap = new HashMap<>();
+
+    public static String getWorkspaceDir(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.PREF_NAME, Context.MODE_PRIVATE);
+        String result = sharedPreferences.getString(AppConstants.KEY_PREF_WORKSPACE, "");
+        return result;
+    }
+
+    public static void setWorkspaceDir(Context context, String path) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(AppConstants.KEY_PREF_WORKSPACE, path);
+        editor.apply();
+    }
+
+    public static void initPath2NameMap(HashMap hashMap) {
+        paht2NameMap = hashMap;
+    }
+
+    public static String getPathFromName(String name) {
+        if (paht2NameMap.containsKey(name))
+            return paht2NameMap.get(name);
+        return name;
+    }
+
+    public static List<FileItemBean> readFileListFromPath(Context context, String path) {
+        List<FileItemBean> resultList = new ArrayList<>();
+        File file = new File(path);
+        File[] source = file.listFiles();
+        if (source == null) return null;
+        for (File temp : source) {
+            FileItemBean fileItemBean = new FileItemBean(temp.getName());
+            fileItemBean.setLastModified(temp.lastModified());
+            if (temp.isDirectory()) {
+                fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.ic_folder_blue_500_36dp));
+                fileItemBean.setDirectory(true);
+            } else {
+                fileItemBean.setDirectory(false);
+                if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_music)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_video)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_picture)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_document)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_compress)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_application)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                else
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+            }
+            resultList.add(fileItemBean);
+        }
+        return resultList;
+    }
+
+    public static String getFileTypeFromName(File file, Context context) {
+        String fileType = "file/*";
+        if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_pdf)))
+            fileType = "application/pdf";
+        else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_picture)))
+            fileType = "image/*";
+        else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_ppt)))
+            fileType = "application/vnd.ms-powerpoint";
+        else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_video)))
+            fileType = "video/*";
+        else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_music)))
+            fileType = "audio/*";
+        else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_application)))
+            fileType = "application/vnd.android.package-archive";
+        else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_document)))
+            fileType = "audio/*";
+        else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_excel)))
+            fileType = "application/vnd.ms-excel";
+        else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_word)))
+            fileType = "application/msword";
+
+        return fileType;
+    }
+
+    public static boolean checkEndWidthCurrentType(String filename, String[] regex) {
+        for (String type : regex) {
+            if (filename.endsWith(type))
+                return true;
+        }
+        return false;
+    }
+
+    public static void addFragmentToActivity(FragmentManager fragmentManager, Fragment fragment, int frameId) {
+        checkNotNull(fragmentManager);
+        checkNotNull(fragment);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(frameId, fragment);
+        transaction.commitAllowingStateLoss();
+    }
+
+    public static <T> T checkNotNull(T reference) {
+        if (reference == null) {
+            throw new NullPointerException();
+        }
+        return reference;
+    }
+
+    public static boolean checkHasMatchApp(String packageName, Context context) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals(packageName))
+                    return true;
+            }
+        }
+        return false;
+    }
+}

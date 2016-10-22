@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type_music">
+        <item>.mp3</item>
+        <item>.wav</item>
+        <item>.ogg</item>
+        <item>.midi</item>
+        <item>.wma</item>
+    </string-array>
+    <string-array name="type_video">
+        <item>.mp4</item>
+        <item>.rm</item>
+        <item>.mpg</item>
+        <item>.avi</item>
+        <item>.mpeg</item>
+    </string-array>
+    <string-array name="type_picture">
+        <item>.png</item>
+        <item>.gif</item>
+        <item>.jpg</item>
+        <item>.jpeg</item>
+        <item>.bmp</item>
+        <item>.atdoc</item>
+    </string-array>
+    <string-array name="type_compress">
+        <item>.jar</item>
+        <item>.zip</item>
+        <item>.rar</item>
+        <item>.gz</item>
+    </string-array>
+    <string-array name="type_document">
+        <item>.txt</item>
+        <item>.htm</item>
+        <item>.html</item>
+        <item>.php</item>
+        <item>.pdf</item>
+        <item>.chm</item>
+    </string-array>
+    <string-array name="type_application">
+        <item>.apk</item>
+    </string-array>
+    <string-array name="type_pdf">
+        <item>.pdf</item>
+        <item>.PDF</item>
+    </string-array>
+    <string-array name="type_ppt">
+        <item>.ppt</item>
+        <item>.pptx</item>
+        <item>.pps</item>
+        <item>.dps</item>
+        <item>.dpt</item>
+        <item>.pot</item>
+        <item>.potm</item>
+        <item>.ppsx</item>
+        <item>.posm</item>
+        <item>.potx</item>
+    </string-array>
+    <string-array name="type_word">
+        <item>.doc</item>
+        <item>.docx</item>
+        <item>.dotx</item>
+        <item>.docm</item>
+        <item>.dotm</item>
+        <item>.wps</item>
+        <item>.wpt</item>
+    </string-array>
+    <string-array name="type_excel">
+        <item>.et</item>
+        <item>.ett</item>
+        <item>.xls</item>
+        <item>.xlt</item>
+        <item>.xlsx</item>
+        <item>.xlsm</item>
+        <item>.xltx</item>
+        <item>.xltm</item>
+    </string-array>
+</resources>

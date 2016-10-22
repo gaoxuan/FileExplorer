@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">文件浏览器</string>
+    <string name="app_workspace">工作目录</string>
+
+    <string name="action_search">搜索</string>
+    <string name="action_create">新建</string>
+    <string name="action_refresh">刷新</string>
+
+    <string name="action_pdf">北极星Office</string>
+    <string name="action_png">涂画</string>
+    <string name="action_png_write">MetaMoji</string>
+
+    <string name="nav_local">本地</string>
+    <string name="nav_local_work">工作目录</string>
+    <string name="nav_local_main">主目录</string>
+    <string name="nav_local_root">根目录</string>
+    <string name="nav_local_storage">内置存储</string>
+    <string name="nav_local_sdcard">SD卡</string>
+    <string name="nav_local_download">下载</string>
+    <string name="nav_repository">库</string>
+    <string name="nav_repository_picture">图片</string>
+    <string name="nav_repository_music">音乐</string>
+    <string name="nav_repository_video">视频</string>
+    <string name="nav_repository_document">文档</string>
+    <string name="nav_repository_application">应用</string>
+    <string name="nav_repository_compress">压缩管理</string>
+    <string name="nav_network">网络</string>
+    <string name="nav_network_bluetooth">蓝牙</string>
+    <string name="nav_network_network">局域网</string>
+
+    <string name="file_copy">复制</string>
+    <string name="file_cut">剪切</string>
+    <string name="file_delete">删除</string>
+    <string name="file_rename">重命名</string>
+    <string name="file_more">更多</string>
+    <string name="file_paste">粘贴</string>
+    <string name="file_new">新建</string>
+    <string name="file_cancel">取消</string>
+
+    <string name="file_none">文件夹为空</string>
+</resources>

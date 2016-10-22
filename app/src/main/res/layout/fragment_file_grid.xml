@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_file_grid_top"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="storage"
+            android:textColor="@color/grey_500" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_keyboard_arrow_right_grey_500_24dp"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/ll_file_grid_top"
+        android:background="@color/grey_500" />
+
+    <GridView
+        android:id="@+id/grid_file"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_file_grid_bottom"
+        android:layout_below="@+id/ll_file_grid_top"
+        android:layout_marginLeft="5dp"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="4"
+        android:scrollbars="none"
+        android:verticalSpacing="10dp"></GridView>
+
+    <RelativeLayout
+        android:id="@+id/rl_file_grid_none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_file_grid_none"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/none_folder" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_file_grid_none"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/file_none"
+            android:textColor="@color/grey_500"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_file_grid_bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_file_grid_bottom_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/grey_900"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_file_copy"
+                style="@style/TV12Grey500"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_filter_1_grey_500_24dp"
+                android:gravity="center"
+                android:text="@string/file_copy" />
+
+            <TextView
+                android:id="@+id/tv_file_cut"
+                style="@style/TV12Grey500"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_content_cut_grey_500_24dp"
+                android:gravity="center"
+                android:text="@string/file_cut" />
+
+            <TextView
+                android:id="@+id/tv_file_delete"
+                style="@style/TV12Grey500"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_delete_grey_500_24dp"
+                android:gravity="center"
+                android:text="@string/file_delete" />
+
+            <TextView
+                android:id="@+id/tv_file_rename"
+                style="@style/TV12Grey500"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_mode_edit_grey_500_24dp"
+                android:gravity="center"
+                android:text="@string/file_rename" />
+
+            <TextView
+                android:id="@+id/tv_file_more"
+                style="@style/TV12Grey500"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_content_copy_grey_500_24dp"
+                android:gravity="center"
+                android:text="@string/file_copy"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_file_grid_bottom_operate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/grey_900"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_file_operate_paste"
+                style="@style/TV12Grey500"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_content_copy_white_24dp"
+                android:gravity="center"
+                android:text="@string/file_paste" />
+
+            <TextView
+                android:id="@+id/tv_file_operate_new"
+                style="@style/TV12Grey500"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_add_white_24dp"
+                android:gravity="center"
+                android:text="@string/file_new" />
+
+            <TextView
+                android:id="@+id/tv_file_operate_cancel"
+                style="@style/TV12Grey500"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/ic_undo_white_24dp"
+                android:gravity="center"
+                android:text="@string/file_cancel" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

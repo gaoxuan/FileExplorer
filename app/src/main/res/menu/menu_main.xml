@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--现在先不加这个功能-->
+    <!--<item-->
+        <!--android:id="@+id/action_search"-->
+        <!--android:icon="@drawable/ic_search_white_24dp"-->
+        <!--android:title="@string/action_search"-->
+        <!--app:showAsAction="always"></item>-->
+    <!--<item-->
+        <!--android:id="@+id/action_create"-->
+        <!--android:icon="@mipmap/ic_launcher"-->
+        <!--android:title="@string/action_create"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/action_refresh"-->
+        <!--android:icon="@mipmap/ic_launcher"-->
+        <!--android:title="@string/action_refresh"-->
+        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_pdf"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/action_pdf"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_png"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/action_png"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_png_write"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/action_png_write"
+        app:showAsAction="never" />
+
+</menu>

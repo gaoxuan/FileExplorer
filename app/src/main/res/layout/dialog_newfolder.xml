@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="220dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_corner"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_dialog_content"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/grey_900"
+        android:textSize="16sp"
+        android:text="重命名" />
+
+    <EditText
+        android:id="@+id/et_dialog_name"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:textColor="@color/grey_900"
+        android:text="新建文件夹"
+        android:layout_height="wrap_content" />
+</FrameLayout>
