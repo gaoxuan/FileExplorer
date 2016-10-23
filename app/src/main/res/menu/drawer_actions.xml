@@ -17,75 +17,43 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/setting_navigation_menu_item"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/nav_setting">
+    </item>
+
+    <item
+        android:id="@+id/web_navigation_menu_item"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/nav_web"></item>
+
+    <item
         android:id="@+id/local_navigation_menu_item"
         android:icon="@mipmap/ic_launcher"
         android:title="@string/nav_local">
         <menu>
-            <!--先不加这个目录-->
-            <!--<item-->
-                <!--android:id="@+id/main_local_navigation_menu_item"-->
-                <!--android:icon="@mipmap/ic_launcher"-->
-                <!--android:menuCategory="alternative"-->
-                <!--android:title="@string/nav_local_main"></item>-->
             <item
                 android:id="@+id/main_local_navigation_menu_item"
                 android:icon="@mipmap/ic_launcher"
-                android:menuCategory="system"
                 android:title="@string/nav_local_main"></item>
             <item
                 android:id="@+id/root_local_navigation_menu_item"
                 android:icon="@mipmap/ic_launcher"
-                android:menuCategory="system"
                 android:title="@string/nav_local_root"></item>
             <item
                 android:id="@+id/download_local_navigation_menu_item"
                 android:icon="@mipmap/ic_launcher"
-                android:menuCategory="system"
                 android:title="@string/nav_local_download"></item>
             <item
                 android:id="@+id/storage_local_navigation_menu_item"
                 android:icon="@mipmap/ic_launcher"
-                android:menuCategory="system"
                 android:title="@string/nav_local_storage"></item>
             <item
                 android:id="@+id/sdcard_local_navigation_menu_item"
                 android:icon="@mipmap/ic_launcher"
-                android:menuCategory="system"
                 android:title="@string/nav_local_sdcard"></item>
         </menu>
     </item>
-    <!--<item-->
-        <!--android:id="@+id/repository_navigation_menu_item"-->
-        <!--android:icon="@mipmap/ic_launcher"-->
-        <!--android:title="@string/nav_repository">-->
-        <!--<menu>-->
-
-            <!--<item-->
-                <!--android:id="@+id/picture_repository_navigation_menu_item"-->
-                <!--android:icon="@mipmap/ic_launcher"-->
-                <!--android:title="@string/nav_repository_picture"></item>-->
-            <!--<item-->
-                <!--android:id="@+id/music_repository_navigation_menu_item"-->
-                <!--android:icon="@mipmap/ic_launcher"-->
-                <!--android:title="@string/nav_repository_music"></item>-->
-            <!--<item-->
-                <!--android:id="@+id/video_repository_navigation_menu_item"-->
-                <!--android:icon="@mipmap/ic_launcher"-->
-                <!--android:title="@string/nav_repository_video"></item>-->
-            <!--<item-->
-                <!--android:id="@+id/document_repository_navigation_menu_item"-->
-                <!--android:icon="@mipmap/ic_launcher"-->
-                <!--android:title="@string/nav_repository_document"></item>-->
-            <!--<item-->
-                <!--android:id="@+id/application_repository_navigation_menu_item"-->
-                <!--android:icon="@mipmap/ic_launcher"-->
-                <!--android:title="@string/nav_repository_application"></item>-->
-            <!--<item-->
-                <!--android:id="@+id/compress_repository_navigation_menu_item"-->
-                <!--android:icon="@mipmap/ic_launcher"-->
-                <!--android:title="@string/nav_repository_compress"></item>-->
-        <!--</menu>-->
-    <!--</item>-->
     <item
         android:id="@+id/network_navigation_menu_item"
         android:icon="@mipmap/ic_launcher"
@@ -101,4 +69,5 @@
                 android:title="@string/nav_network_network"></item>
         </menu>
     </item>
+
 </menu>

@@ -185,22 +185,6 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
                                 fileGridFragment.setCurrentPath(AppConstants.PATH_SDCARD, menuItem.getTitle().toString());
                                 break;
 
-//                            case R.id.picture_repository_navigation_menu_item:
-//                                fileGridFragment.setCurrentPath(AppConstants.PATH_PICTURE);
-//                                break;
-//                            case R.id.music_repository_navigation_menu_item:
-//                                fileGridFragment.setCurrentPath(AppConstants.PATH_MUSIC);
-//                                break;
-//                            case R.id.video_repository_navigation_menu_item:
-//                                fileGridFragment.setCurrentPath(AppConstants.PATH_VIDEO);
-//                                break;
-//                            case R.id.document_repository_navigation_menu_item:
-//                                fileGridFragment.setCurrentPath(AppConstants.PATH_DOCUMENT);
-//                                break;
-//                            case R.id.application_repository_navigation_menu_item:
-//                                break;
-//                            case R.id.compress_repository_navigation_menu_item:
-//                                break;
                             case R.id.bluetooth_network_navigation_menu_item:
 
                                 break;

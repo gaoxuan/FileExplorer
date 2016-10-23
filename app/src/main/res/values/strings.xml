@@ -10,6 +10,7 @@
     <string name="action_png">涂画</string>
     <string name="action_png_write">MetaMoji</string>
 
+    <string name="nav_setting">设置</string>
     <string name="nav_local">本地</string>
     <string name="nav_local_work">工作目录</string>
     <string name="nav_local_main">主目录</string>
@@ -27,6 +28,7 @@
     <string name="nav_network">网络</string>
     <string name="nav_network_bluetooth">蓝牙</string>
     <string name="nav_network_network">局域网</string>
+    <string name="nav_web">网页</string>
 
     <string name="file_copy">复制</string>
     <string name="file_cut">剪切</string>
@@ -38,4 +40,10 @@
     <string name="file_cancel">取消</string>
 
     <string name="file_none">文件夹为空</string>
+
+    <string name="type_txt">文本</string>
+    <string name="type_audio">音频</string>
+    <string name="type_video">视频</string>
+    <string name="type_image">图片</string>
+    <string name="type_other">其他</string>
 </resources>

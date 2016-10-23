@@ -53,24 +53,38 @@ public class Utils {
             FileItemBean fileItemBean = new FileItemBean(temp.getName());
             fileItemBean.setLastModified(temp.lastModified());
             if (temp.isDirectory()) {
-                fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.ic_folder_blue_500_36dp));
+                fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_folder));
                 fileItemBean.setDirectory(true);
             } else {
                 fileItemBean.setDirectory(false);
                 if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_music)))
-                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_music));
                 else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_video)))
-                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_media));
                 else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_picture)))
-                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_picture));
                 else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_document)))
-                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_document));
                 else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_compress)))
-                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_compress));
                 else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_application)))
-                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_app));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_word)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_word));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_excel)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_excel));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_ppt)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_ppt));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_flash)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_flash));
+                else if (checkEndWidthCurrentType(fileItemBean.getFileName(), context.getResources().getStringArray(R.array.type_html)))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_html));
+                else if (fileItemBean.getFileName().toLowerCase().endsWith(".txt"))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_text));
+                else if (fileItemBean.getFileName().toLowerCase().endsWith(".pdf"))
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_pdf));
                 else
-                    fileItemBean.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+                    fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_unkown));
             }
             resultList.add(fileItemBean);
         }
@@ -92,7 +106,7 @@ public class Utils {
         else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_application)))
             fileType = "application/vnd.android.package-archive";
         else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_document)))
-            fileType = "audio/*";
+            fileType = "text/plain";
         else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_excel)))
             fileType = "application/vnd.ms-excel";
         else if (checkEndWidthCurrentType(file.getName(), context.getResources().getStringArray(R.array.type_word)))

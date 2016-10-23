@@ -533,12 +533,40 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     private void openFileWithApp(File file, String fileType) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file), fileType);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            startActivity(Intent.createChooser(intent, "选择浏览工具"));
+            if (fileType.equals("file/*"))
+                showTypeDialog(file);
+            else
+                startActivity(Intent.createChooser(intent, "选择浏览工具"));
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showTypeDialog(File file) {
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_filetype, null);
+        TextView txtTV = (TextView) view.findViewById(R.id.tv_dialog_type_txt);
+        TextView audioTV = (TextView) view.findViewById(R.id.tv_dialog_type_audio);
+        TextView videoTV = (TextView) view.findViewById(R.id.tv_dialog_type_video);
+        TextView imageTV = (TextView) view.findViewById(R.id.tv_dialog_type_image);
+        TextView otherTV = (TextView) view.findViewById(R.id.tv_dialog_type_other);
+        Executable<Boolean> executable = new Executable<Boolean>() {
+            @Override
+            public void execute(Boolean result) {
+                if (result)
+                    dialog.dismiss();
+            }
+        };
+        FileTypeClickListener listener = new FileTypeClickListener(file, executable);
+        txtTV.setOnClickListener(listener);
+        audioTV.setOnClickListener(listener);
+        videoTV.setOnClickListener(listener);
+        imageTV.setOnClickListener(listener);
+        otherTV.setOnClickListener(listener);
+        dialog.setView(view);
+        dialog.show();
     }
 
     public void setCurrentPath(String path, String name) {
@@ -572,5 +600,39 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         void onSelectChanged(boolean isSelection);
 
         void onDirChanged(String path);
+    }
+
+    class FileTypeClickListener implements View.OnClickListener {
+        File file;
+        Executable<Boolean> executable;
+
+        FileTypeClickListener(File file, Executable<Boolean> executable) {
+            this.file = file;
+            this.executable = executable;
+        }
+
+        @Override
+        public void onClick(View v) {
+            executable.execute(true);
+            String fileType = "*/*";
+            switch (v.getId()) {
+                case R.id.tv_dialog_type_txt:
+                    fileType = "text/plain";
+                    break;
+                case R.id.tv_dialog_type_audio:
+                    fileType = "audio/*";
+                    break;
+                case R.id.tv_dialog_type_video:
+                    fileType = "video/*";
+                    break;
+                case R.id.tv_dialog_type_image:
+                    fileType = "image/*";
+                    break;
+                case R.id.tv_dialog_type_other:
+                    fileType = "*/*";
+                    break;
+            }
+            openFileWithApp(file, fileType);
+        }
     }
 }

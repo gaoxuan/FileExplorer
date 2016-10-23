@@ -8,7 +8,7 @@
         android:id="@+id/iv_grid_file"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:background="@drawable/ic_folder_blue_500_36dp" />
+        android:background="@drawable/format_folder" />
 
     <ImageView
         android:id="@+id/iv_grid_file_unselected"
