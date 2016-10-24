@@ -1,0 +1,26 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_sort_list"
+        android:entryValues="@array/pref_sort_list_values"
+        android:key="@string/pref_name_sort_time"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_sort_time" />
+    <!--<ListPreference-->
+        <!--android:defaultValue="1"-->
+        <!--android:entries="@array/pref_sort_list"-->
+        <!--android:entryValues="@array/pref_sort_list_values"-->
+        <!--android:key="@string/pref_name_sort_size"-->
+        <!--android:negativeButtonText="@null"-->
+        <!--android:positiveButtonText="@null"-->
+        <!--android:title="@string/pref_title_sort_size" />-->
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_sort_list"
+        android:entryValues="@array/pref_sort_list_values"
+        android:key="@string/pref_name_sort_name"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_sort_name" />
+</PreferenceScreen>

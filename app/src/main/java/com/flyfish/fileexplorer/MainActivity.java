@@ -4,8 +4,10 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +19,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements FileGridFragment.OnStateChangeListener {
@@ -35,6 +40,87 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
         initPath2NameMap();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        readPreference();
+    }
+
+    private void readPreference() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String sortTime = settings.getString(AppConstants.PREF_LIST_SORT_TIME, "1");
+        String sortName = settings.getString(AppConstants.PREF_LIST_SORT_NAME, "1");
+        String sortSize = settings.getString(AppConstants.PREF_LIST_SORT_SIZE, "1");
+        Comparator<FileItemBean> comparator = getComparatorFromPref(sortTime, sortName, sortSize);
+        fileGridFragment.setComparator(comparator);
+
+        String column = settings.getString(AppConstants.PREF_LIST_ICON_SIZE, "1");
+        switch (column) {
+            case "1":
+                fileGridFragment.setColumnNum(4);
+                break;
+            case "0":
+                fileGridFragment.setColumnNum(5);
+                break;
+            case "-1":
+                fileGridFragment.setColumnNum(6);
+                break;
+        }
+
+        boolean showHideFile = settings.getBoolean(AppConstants.PREF_SWITCHER_ICON_SIZE, true);
+        fileGridFragment.showHideFiles(showHideFile);
+    }
+
+    private Comparator<FileItemBean> getComparatorFromPref(final String sortTime, final String sortName, String sortSize) {
+        return new Comparator<FileItemBean>() {
+            @Override
+            public int compare(FileItemBean f1, FileItemBean f2) {
+                if (f1 == null || f2 == null) {
+                    if (f1 == null)
+                        return -1;
+                    else
+                        return 1;
+                } else {
+                    if (f1.isDirectory() && f2.isDirectory()) {
+                        long compare;
+                        if (sortTime.equals("1")) {
+                            compare = f1.getLastModified() - f2.getLastModified();
+                        } else {
+                            compare = f2.getLastModified() - f1.getLastModified();
+                        }
+                        if (compare == 0) {
+                            if (sortName.equals("1"))
+                                return f1.getFileName().compareToIgnoreCase(f2.getFileName());
+                            else
+                                return f2.getFileName().compareToIgnoreCase(f1.getFileName());
+                        } else
+                            return compare < 0 ? 1 : -1;
+                    } else {
+                        if (f1.isDirectory() && !f2.isDirectory()) {
+                            return -1;
+                        } else if (f2.isDirectory() && !f1.isDirectory()) {
+                            return 1;
+                        } else {
+                            long compare;
+                            if (sortTime.equals("1")) {
+                                compare = f1.getLastModified() - f2.getLastModified();
+                            } else {
+                                compare = f2.getLastModified() - f1.getLastModified();
+                            }
+                            if (compare == 0) {
+                                if (sortName.equals("1"))
+                                    return f1.getFileName().compareToIgnoreCase(f2.getFileName());
+                                else
+                                    return f2.getFileName().compareToIgnoreCase(f1.getFileName());
+                            } else
+                                return compare < 0 ? 1 : -1;
+                        }
+                    }
+                }
+            }
+        };
+    }
+
     private void initPath2NameMap() {
         HashMap hashMap = new HashMap();
         hashMap.put(getResources().getString(R.string.nav_local_main), AppConstants.PATH_MAIN);
@@ -50,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
                 (FileGridFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (fileGridFragment == null) {
             // Create the fragment
-            fileGridFragment = FileGridFragment.newInstance();
+            fileGridFragment = FileGridFragment.newInstance(null);
             Utils.addFragmentToActivity(
                     getSupportFragmentManager(), fileGridFragment, R.id.contentFrame);
         }
@@ -169,6 +255,13 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
+                            case R.id.setting_navigation_menu_item:
+                                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.web_navigation_menu_item:
+
+                                break;
                             case R.id.main_local_navigation_menu_item:
                                 fileGridFragment.setCurrentPath(AppConstants.PATH_MAIN, menuItem.getTitle().toString());
                                 break;

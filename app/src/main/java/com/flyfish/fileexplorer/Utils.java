@@ -44,7 +44,7 @@ public class Utils {
         return name;
     }
 
-    public static List<FileItemBean> readFileListFromPath(Context context, String path) {
+    public static List<FileItemBean> readFileListFromPath(Context context, String path, boolean showHideFile) {
         List<FileItemBean> resultList = new ArrayList<>();
         File file = new File(path);
         File[] source = file.listFiles();
@@ -52,6 +52,8 @@ public class Utils {
         for (File temp : source) {
             FileItemBean fileItemBean = new FileItemBean(temp.getName());
             fileItemBean.setLastModified(temp.lastModified());
+            if (fileItemBean.getFileName().startsWith(".") && !showHideFile)
+                continue;
             if (temp.isDirectory()) {
                 fileItemBean.setIcon(context.getResources().getDrawable(R.drawable.format_folder));
                 fileItemBean.setDirectory(true);

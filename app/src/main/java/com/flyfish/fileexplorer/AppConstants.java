@@ -45,4 +45,10 @@ public class AppConstants {
     public static final String APP_CLASS_PDF = "com.infraware.service.ActLauncher";
     public static final String APP_CLASS_PNG = "com.sonymobile.sketch.dashboard.DashboardActivity";
     public static final String APP_CLASS_PNG_WRITE = "com.metamoji.noteanytime.StartupActivity";
+
+    public static final String PREF_LIST_ICON_SIZE = "icon_size_list";
+    public static final String PREF_LIST_SORT_TIME = "time_sort_list";
+    public static final String PREF_LIST_SORT_SIZE = "size_sort_list";
+    public static final String PREF_LIST_SORT_NAME = "name_sort_list";
+    public static final String PREF_SWITCHER_ICON_SIZE = "hide_switch";
 }

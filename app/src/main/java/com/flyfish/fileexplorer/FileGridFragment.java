@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,9 +40,11 @@ import java.util.List;
  * Created by gaoxuan on 2016/10/1.
  */
 public class FileGridFragment extends Fragment implements View.OnClickListener {
+    private static final String COMPARATOR = "comparator";
     private static final String OPERATE_COPY = "operate_copy";
     private static final String OPERATE_CUT = "operate_cut";
     private static final String OPERATE_CANCEL = "operate_cancel";
+    private static Comparator<FileItemBean> comparator;
     private LinearLayout selectLL;
     private LinearLayout operateLL;
     private RelativeLayout tipRL;
@@ -61,13 +64,16 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     private List<String> pathList;
     private String operate = OPERATE_CANCEL;
 
+    private boolean showHideFile = true;
     private UIHandler uiHandler;
     private AlertDialog copyDialog;
     private AlertDialog folderDialog;
     private AlertDialog deleteDialog;
+
     private Client mClient;
 
     static class UIHandler extends Handler {
+
         WeakReference<FileGridFragment> fragmentWeakReference;
 
         UIHandler(FileGridFragment fragment) {
@@ -89,45 +95,30 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
                     fragment.copyDialog.dismiss();
             }
         }
+
     }
 
-    private static Comparator<FileItemBean> comparator = new Comparator<FileItemBean>() {
-        @Override
-        public int compare(FileItemBean f1, FileItemBean f2) {
-            if (f1 == null || f2 == null) {
-                if (f1 == null)
-                    return -1;
-                else
-                    return 1;
-            } else {
-                if (f1.isDirectory() == true && f2.isDirectory() == true) {
-                    return f1.getFileName().compareToIgnoreCase(f2.getFileName());
-                } else {
-                    if ((f1.isDirectory() && !f2.isDirectory()) == true) {
-                        return -1;
-                    } else if ((f2.isDirectory() && !f1.isDirectory()) == true) {
-                        return 1;
-                    } else {
-                        return f1.getFileName().compareToIgnoreCase(f2.getFileName());
-                    }
-                }
-            }
-        }
-    };
-
-    public static FileGridFragment newInstance() {
-        return new FileGridFragment();
+    public static FileGridFragment newInstance(Comparator<FileItemBean> comparator) {
+        FileGridFragment fragment = new FileGridFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(COMPARATOR, (Serializable) comparator);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            comparator = (Comparator<FileItemBean>) getArguments().getSerializable(COMPARATOR);
+        }
+
         uiHandler = new UIHandler(this);
         mClient = Client.newInstance();
         adapter = new FileGridAdapter(getActivity());
         currentPath = AppConstants.PATH_MAIN;
-        currentFileList = Utils.readFileListFromPath(getActivity(), currentPath);
-        if (currentFileList != null)
+        currentFileList = Utils.readFileListFromPath(getActivity(), currentPath, showHideFile);
+        if (currentFileList != null && comparator != null)
             Collections.sort(currentFileList, comparator);
         positionList = new ArrayList<>();
         pathList = new ArrayList<>();
@@ -429,15 +420,16 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateFileList() {
-        if (Utils.readFileListFromPath(getActivity(), currentPath) == null ||
-                Utils.readFileListFromPath(getActivity(), currentPath).size() == 0) {
+        if (Utils.readFileListFromPath(getActivity(), currentPath, showHideFile) == null ||
+                Utils.readFileListFromPath(getActivity(), currentPath, showHideFile).size() == 0) {
             tipRL.setVisibility(View.VISIBLE);
             fileGV.setVisibility(View.GONE);
         } else {
             tipRL.setVisibility(View.GONE);
             fileGV.setVisibility(View.VISIBLE);
-            currentFileList = Utils.readFileListFromPath(getActivity(), currentPath);
-            Collections.sort(currentFileList, comparator);
+            currentFileList = Utils.readFileListFromPath(getActivity(), currentPath, showHideFile);
+            if (comparator != null)
+                Collections.sort(currentFileList, comparator);
             adapter.setListAndNotifyDataChanged(currentFileList);
         }
     }
@@ -589,6 +581,19 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         updateFileList();
     }
 
+    public void setColumnNum(int num) {
+        fileGV.setNumColumns(num);
+    }
+
+    public void showHideFiles(boolean show) {
+        showHideFile = show;
+        updateFileList();
+    }
+
+    public void setComparator(Comparator<FileItemBean> comparator) {
+        FileGridFragment.comparator = comparator;
+        updateFileList();
+    }
 
     public boolean hasOtherDir() {
         return pathList.size() > 1;

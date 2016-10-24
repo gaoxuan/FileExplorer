@@ -46,4 +46,47 @@
     <string name="type_video">视频</string>
     <string name="type_image">图片</string>
     <string name="type_other">其他</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="pref_name_icon_size">icon_size_list</string>
+    <string name="pref_name_sort_time">time_sort_list</string>
+    <string name="pref_name_sort_size">size_sort_list</string>
+    <string name="pref_name_sort_name">name_sort_list</string>
+    <string name="pref_name_switch_file_hide">hide_switch</string>
+
+    <string name="pref_header_display">显示设置</string>
+    <string name="pref_title_hide_file">显示隐藏文件</string>
+    <string name="pref_description_social_recommendations">系统的隐藏文件和文件夹会被显示</string>
+
+    <string name="pref_title_icon_size">文件图标</string>
+    <string-array name="pref_display_list_icon">
+        <item>大</item>
+        <item>中</item>
+        <item>小</item>
+    </string-array>
+    <string-array name="pref_display_list_values_icon">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_sort_time">按时间排序</string>
+    <string name="pref_title_sort_size">按大小排序</string>
+    <string name="pref_title_sort_name">按名称排序</string>
+    <string-array name="pref_sort_list">
+        <item>升序</item>
+        <item>降序</item>
+    </string-array>
+    <string-array name="pref_sort_list_values">
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+
+    <string name="pref_header_about">关于</string>
+    <string name="pref_title_system_version">版本</string>
+    <string name="pref_header_sort">文件排序</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
 </resources>
