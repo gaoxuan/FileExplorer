@@ -1,6 +1,5 @@
 package com.flyfish.fileexplorer;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -8,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
+import android.util.TypedValue;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
  * Created by gaoxuan on 2016/10/1.
  */
 public class Utils {
-    private static HashMap<String, String> paht2NameMap = new HashMap<>();
+    private static HashMap<String, String> path2NameMap = new HashMap<>();
 
     public static String getWorkspaceDir(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.PREF_NAME, Context.MODE_PRIVATE);
@@ -35,12 +34,12 @@ public class Utils {
     }
 
     public static void initPath2NameMap(HashMap hashMap) {
-        paht2NameMap = hashMap;
+        path2NameMap = hashMap;
     }
 
     public static String getPathFromName(String name) {
-        if (paht2NameMap.containsKey(name))
-            return paht2NameMap.get(name);
+        if (path2NameMap.containsKey(name))
+            return path2NameMap.get(name);
         return name;
     }
 
@@ -52,6 +51,7 @@ public class Utils {
         for (File temp : source) {
             FileItemBean fileItemBean = new FileItemBean(temp.getName());
             fileItemBean.setLastModified(temp.lastModified());
+            fileItemBean.setFilePath(temp.getAbsolutePath());
             if (fileItemBean.getFileName().startsWith(".") && !showHideFile)
                 continue;
             if (temp.isDirectory()) {
@@ -142,14 +142,18 @@ public class Utils {
 
     public static boolean checkHasMatchApp(String packageName, Context context) {
         final PackageManager packageManager = context.getPackageManager();
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
+        List<PackageInfo> packages = packageManager.getInstalledPackages(0);
+        if (packages != null) {
+            for (int i = 0; i < packages.size(); i++) {
+                String pn = packages.get(i).packageName;
                 if (pn.equals(packageName))
                     return true;
             }
         }
         return false;
+    }
+
+    public static int dp2px(int dpSize, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpSize, context.getResources().getDisplayMetrics());
     }
 }

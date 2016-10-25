@@ -1,6 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
-        android:defaultValue="1"
+        android:defaultValue="0"
         android:entries="@array/pref_sort_list"
         android:entryValues="@array/pref_sort_list_values"
         android:key="@string/pref_name_sort_time"

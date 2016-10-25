@@ -4,39 +4,50 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.flyfish.fileexplorer.PathHorizontalScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:scrollbars="none"
+        android:layout_alignBottom="@+id/ll_fragment_operate"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/ll_fragment_operate"></com.flyfish.fileexplorer.PathHorizontalScrollView>
+
     <LinearLayout
-        android:id="@+id/ll_file_grid_top"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:visibility="gone"
+        android:id="@+id/ll_fragment_operate"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="storage"
-            android:textColor="@color/grey_500" />
+        <ImageView
+            android:id="@+id/iv_fragment_new"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/toolbar_new" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_keyboard_arrow_right_grey_500_24dp"
-            android:gravity="center" />
+        <ImageView
+            android:id="@+id/iv_fragment_search"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/toolbar_search" />
+
+        <ImageView
+            android:id="@+id/iv_fragment_refresh"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/toolbar_refresh" />
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@id/ll_file_grid_top"
-        android:background="@color/grey_500" />
 
     <GridView
         android:id="@+id/grid_file"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/ll_file_grid_bottom"
-        android:layout_below="@+id/ll_file_grid_top"
+        android:layout_below="@+id/scrollview"
         android:layout_marginLeft="5dp"
         android:gravity="center"
         android:horizontalSpacing="10dp"
@@ -70,10 +81,10 @@
 
     <LinearLayout
         android:id="@+id/ll_file_grid_bottom"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/ll_file_grid_bottom_select"

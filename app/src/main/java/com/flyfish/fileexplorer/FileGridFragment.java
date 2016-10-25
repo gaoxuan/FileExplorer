@@ -34,7 +34,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by gaoxuan on 2016/10/1.
@@ -56,12 +59,14 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     private TextView pasteTV;
     private TextView newTV;
     private TextView cancelTV;
+    private PathHorizontalScrollView scrollView;
     private FileGridAdapter adapter;
     private String currentPath;
     private List<FileItemBean> currentFileList;
     private List<String> operateFileList;
     private List<String> positionList;
     private List<String> pathList;
+    private List<String> historyPathList;
     private String operate = OPERATE_CANCEL;
 
     private boolean showHideFile = true;
@@ -123,6 +128,8 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         positionList = new ArrayList<>();
         pathList = new ArrayList<>();
         pathList.add(currentPath);
+        historyPathList = new LinkedList<>();
+        historyPathList.add(currentPath);
     }
 
     @Nullable
@@ -139,16 +146,13 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         pasteTV = (TextView) view.findViewById(R.id.tv_file_operate_paste);
         newTV = (TextView) view.findViewById(R.id.tv_file_operate_new);
         cancelTV = (TextView) view.findViewById(R.id.tv_file_operate_cancel);
+        scrollView = (PathHorizontalScrollView) view.findViewById(R.id.scrollview);
         fileGV = (GridView) view.findViewById(R.id.grid_file);
         fileGV.setAdapter(adapter);
+        initHistoryScrollViewPath(currentPath);
         setListeners();
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -304,7 +308,6 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         String temp;
         while (it.hasNext()) {
             temp = currentFileList.get(Integer.parseInt(it.next())).getFileName();
-            Logger.d("checkSelectedFilesExist temp:" + temp + ", name:" + currentPath + File.separator + temp);
             operateFileList.add(currentPath + File.separator + temp);
         }
         positionList.clear();
@@ -340,29 +343,6 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
             renameTV.setCompoundDrawables(null, rename, null, null);
         }
     }
-
-    private void setOperateTVBgColor(boolean prepared) {
-        if (prepared) {
-            Drawable paste = getResources().getDrawable(R.drawable.ic_content_copy_white_24dp);
-            paste.setBounds(0, 0, paste.getMinimumWidth(), paste.getMinimumHeight());
-            pasteTV.setCompoundDrawables(null, paste, null, null);
-            pasteTV.setClickable(true);
-            Drawable add = getResources().getDrawable(R.drawable.ic_add_white_24dp);
-            add.setBounds(0, 0, add.getMinimumWidth(), add.getMinimumHeight());
-            newTV.setCompoundDrawables(null, add, null, null);
-            newTV.setClickable(true);
-        } else {
-            Drawable paste = getResources().getDrawable(R.drawable.ic_content_copy_grey_500_24dp);
-            paste.setBounds(0, 0, paste.getMinimumWidth(), paste.getMinimumHeight());
-            pasteTV.setCompoundDrawables(null, paste, null, null);
-            pasteTV.setClickable(false);
-            Drawable add = getResources().getDrawable(R.drawable.ic_add_grey_500_24dp);
-            add.setBounds(0, 0, add.getMinimumWidth(), add.getMinimumHeight());
-            newTV.setCompoundDrawables(null, add, null, null);
-            newTV.setClickable(false);
-        }
-    }
-
 
     private void setListeners() {
         fileGV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -400,7 +380,9 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
                     String path = currentPath + File.separator + currentFileList.get(i).getFileName();
                     File file = new File(path);
                     if (file.isDirectory()) {
+                        scrollView.addView(file.getName());
                         pathList.add(path);
+                        historyPathList.add(path);
                         currentPath = path;
                         onStateChangeListener.onDirChanged(file.getName());
                         updateFileList();
@@ -417,6 +399,43 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         pasteTV.setOnClickListener(this);
         newTV.setOnClickListener(this);
         cancelTV.setOnClickListener(this);
+        scrollView.setOnItemClickListener(new PathHorizontalScrollView.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Logger.i("TAG onItemClick position:" + position);
+                for (String path : historyPathList)
+                    Logger.i("TAG onItemClick path:" + path);
+
+                currentPath = historyPathList.get(position);
+                historyPathList = historyPathList.subList(0, position + 1);
+                updateFileList();
+                pathList.add(currentPath);
+            }
+        });
+    }
+
+    private void initHistoryScrollViewPath(String path) {
+        Logger.i("TAG initHistoryScrollViewPath path:" + path);
+
+        scrollView.initStartPath();
+        historyPathList.clear();
+        historyPathList.add("/");
+        int count = path.split("/").length - 1;
+        LinkedList<String> list = new LinkedList<>();
+        list.add(path);
+        String temp;
+        for (int i = 0; i < count; i++) {
+            temp = list.get(i);
+            list.add(temp.substring(0, temp.lastIndexOf("/")));
+        }
+        File tempFile;
+        for (int i = list.size()-2; i >= 0; i--) {
+            temp = list.get(i);
+            tempFile = new File(temp);
+            Logger.i("TAG initHistoryScrollViewPath name:" + temp + ", path:" + tempFile.getAbsolutePath());
+            historyPathList.add(temp);
+            scrollView.addView(tempFile.getName());
+        }
     }
 
     private void updateFileList() {
@@ -563,15 +582,17 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
 
     public void setCurrentPath(String path, String name) {
         currentPath = path;
-        updateFileList();
         pathList.add(name);
+        updateFileList();
+        initHistoryScrollViewPath(currentPath);
     }
 
     public void back2LastPath() {
         pathList.remove(pathList.size() - 1);
-
         currentPath = pathList.get(pathList.size() - 1);
         currentPath = Utils.getPathFromName(currentPath);
+        updateHistoryScrollView(currentPath);
+
         if (pathList.size() == 1)
             onStateChangeListener.onDirChanged(getString(R.string.nav_local_main));
         else {
@@ -579,6 +600,20 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
             onStateChangeListener.onDirChanged(dir.substring(dir.lastIndexOf("/") + 1));
         }
         updateFileList();
+    }
+
+    private void updateHistoryScrollView(String currentPath) {
+//        if (home.equals(HOME_MAIN) || home.equals(HOME_ROOT))
+//            currentPath = currentPath.replaceFirst(AppConstants.PATH_MAIN, "/");
+        String[] path = currentPath.split("/");
+        File temp;
+        scrollView.removeView(0);
+        historyPathList.clear();
+        for (int i = 1; i < path.length; i++) {
+            temp = new File(path[i]);
+            scrollView.addView(temp.getName());
+            historyPathList.add(temp.getAbsolutePath());
+        }
     }
 
     public void setColumnNum(int num) {
