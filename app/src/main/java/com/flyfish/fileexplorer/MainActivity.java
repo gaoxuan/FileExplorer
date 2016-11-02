@@ -19,8 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
 
     private void readPreference() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String sortTime = settings.getString(AppConstants.PREF_LIST_SORT_TIME, "1");
+        String sortTime = settings.getString(AppConstants.PREF_LIST_SORT_TIME, "0");
         String sortName = settings.getString(AppConstants.PREF_LIST_SORT_NAME, "1");
         String sortSize = settings.getString(AppConstants.PREF_LIST_SORT_SIZE, "1");
         Comparator<FileItemBean> comparator = getComparatorFromPref(sortTime, sortName, sortSize);

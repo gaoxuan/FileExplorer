@@ -4,7 +4,7 @@
          design guidelines. -->
     <Preference
         android:title="@string/pref_title_system_version"
-        android:summary="1.2">
+        android:summary="1.3">
     </Preference>
 
 </PreferenceScreen>

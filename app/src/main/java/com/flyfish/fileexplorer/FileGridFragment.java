@@ -20,12 +20,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.io.Serializable;
@@ -36,8 +35,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by gaoxuan on 2016/10/1.
@@ -59,6 +56,9 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     private TextView pasteTV;
     private TextView newTV;
     private TextView cancelTV;
+    private ImageView newFolderIV;
+    private ImageView searchIV;
+    private ImageView refreshIV;
     private PathHorizontalScrollView scrollView;
     private FileGridAdapter adapter;
     private String currentPath;
@@ -146,6 +146,9 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         pasteTV = (TextView) view.findViewById(R.id.tv_file_operate_paste);
         newTV = (TextView) view.findViewById(R.id.tv_file_operate_new);
         cancelTV = (TextView) view.findViewById(R.id.tv_file_operate_cancel);
+        newFolderIV = (ImageView) view.findViewById(R.id.iv_fragment_new);
+        searchIV = (ImageView) view.findViewById(R.id.iv_fragment_search);
+        refreshIV = (ImageView) view.findViewById(R.id.iv_fragment_refresh);
         scrollView = (PathHorizontalScrollView) view.findViewById(R.id.scrollview);
         fileGV = (GridView) view.findViewById(R.id.grid_file);
         fileGV.setAdapter(adapter);
@@ -192,7 +195,40 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
             case R.id.tv_file_operate_new:
                 fileNewFolder();
                 break;
+            case R.id.iv_fragment_new:
+                fileNewFolder();
+                break;
+            case R.id.iv_fragment_search:
+                fileSearch();
+                break;
+            case R.id.iv_fragment_refresh:
+                updateFileList();
+                break;
         }
+    }
+
+    private void fileSearch() {
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+        dialog.setTitle("搜索");
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_newfolder, null);
+        final EditText contentET = (EditText) view.findViewById(R.id.et_dialog_name);
+        TextView textView = (TextView) view.findViewById(R.id.tv_dialog_content);
+        textView.setText("请输入搜索内容");
+        contentET.setText("");
+        dialog.setView(view);
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               Toast.makeText(getActivity(), "搜索", Toast.LENGTH_SHORT).show();
+            }
+        });
+        dialog.show();
     }
 
     private void fileNewFolder() {
@@ -351,7 +387,6 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
                 selectLL.setVisibility(View.VISIBLE);
                 currentFileList.get(i).setSelected(true);
                 positionList.add(String.valueOf(i));
-                Logger.d("onItemLongClick i:" + i);
                 adapter.setSelecting(true);
                 adapter.notifyDataSetChanged();
                 if (positionList.size() == 1)
@@ -371,7 +406,6 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
                     } else {
                         currentFileList.get(i).setSelected(true);
                         positionList.add(String.valueOf(i));
-                        Logger.d("onItemClick i:" + i);
                         if (positionList.size() == 1)
                             setTVBgColor(true);
                     }
@@ -399,13 +433,12 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         pasteTV.setOnClickListener(this);
         newTV.setOnClickListener(this);
         cancelTV.setOnClickListener(this);
+        newFolderIV.setOnClickListener(this);
+        searchIV.setOnClickListener(this);
+        refreshIV.setOnClickListener(this);
         scrollView.setOnItemClickListener(new PathHorizontalScrollView.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Logger.i("TAG onItemClick position:" + position);
-                for (String path : historyPathList)
-                    Logger.i("TAG onItemClick path:" + path);
-
                 currentPath = historyPathList.get(position);
                 historyPathList = historyPathList.subList(0, position + 1);
                 updateFileList();
@@ -415,8 +448,6 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initHistoryScrollViewPath(String path) {
-        Logger.i("TAG initHistoryScrollViewPath path:" + path);
-
         scrollView.initStartPath();
         historyPathList.clear();
         historyPathList.add("/");
@@ -432,7 +463,6 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         for (int i = list.size()-2; i >= 0; i--) {
             temp = list.get(i);
             tempFile = new File(temp);
-            Logger.i("TAG initHistoryScrollViewPath name:" + temp + ", path:" + tempFile.getAbsolutePath());
             historyPathList.add(temp);
             scrollView.addView(tempFile.getName());
         }
@@ -603,8 +633,6 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateHistoryScrollView(String currentPath) {
-//        if (home.equals(HOME_MAIN) || home.equals(HOME_ROOT))
-//            currentPath = currentPath.replaceFirst(AppConstants.PATH_MAIN, "/");
         String[] path = currentPath.split("/");
         File temp;
         scrollView.removeView(0);
