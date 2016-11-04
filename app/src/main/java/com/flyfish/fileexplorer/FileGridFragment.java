@@ -40,7 +40,8 @@ import java.util.List;
  * Created by gaoxuan on 2016/10/1.
  */
 public class FileGridFragment extends Fragment implements View.OnClickListener {
-    private static final String COMPARATOR = "comparator";
+    private static final String ARG_COMPARATOR = "comparator";
+    private static final String ARG_CURRENTPATH = "currentpath";
     private static final String OPERATE_COPY = "operate_copy";
     private static final String OPERATE_CUT = "operate_cut";
     private static final String OPERATE_CANCEL = "operate_cancel";
@@ -103,10 +104,10 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public static FileGridFragment newInstance(Comparator<FileItemBean> comparator) {
+    public static FileGridFragment newInstance(Comparator<FileItemBean> comparator, String path) {
         FileGridFragment fragment = new FileGridFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(COMPARATOR, (Serializable) comparator);
+        bundle.putSerializable(ARG_COMPARATOR, (Serializable) comparator);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -115,13 +116,15 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            comparator = (Comparator<FileItemBean>) getArguments().getSerializable(COMPARATOR);
+            comparator = (Comparator<FileItemBean>) getArguments().getSerializable(ARG_COMPARATOR);
+            currentPath = getArguments().getString(ARG_CURRENTPATH);
         }
 
         uiHandler = new UIHandler(this);
         mClient = Client.newInstance();
         adapter = new FileGridAdapter(getActivity());
-        currentPath = AppConstants.PATH_MAIN;
+        if (currentPath == null)
+            currentPath = AppConstants.PATH_MAIN;
         currentFileList = Utils.readFileListFromPath(getActivity(), currentPath, showHideFile);
         if (currentFileList != null && comparator != null)
             Collections.sort(currentFileList, comparator);
@@ -208,27 +211,29 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     }
 
     private void fileSearch() {
-        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
-        dialog.setTitle("搜索");
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_newfolder, null);
-        final EditText contentET = (EditText) view.findViewById(R.id.et_dialog_name);
-        TextView textView = (TextView) view.findViewById(R.id.tv_dialog_content);
-        textView.setText("请输入搜索内容");
-        contentET.setText("");
-        dialog.setView(view);
-        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-               Toast.makeText(getActivity(), "搜索", Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog.show();
+        Intent intent = new Intent(getActivity(), SearchActivity.class);
+        startActivity(intent);
+//        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+//        dialog.setTitle("搜索");
+//        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_newfolder, null);
+//        final EditText contentET = (EditText) view.findViewById(R.id.et_dialog_name);
+//        TextView textView = (TextView) view.findViewById(R.id.tv_dialog_content);
+//        textView.setText("请输入搜索内容");
+//        contentET.setText("");
+//        dialog.setView(view);
+//        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Toast.makeText(getActivity(), "搜索", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        dialog.show();
     }
 
     private void fileNewFolder() {
@@ -460,7 +465,7 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
             list.add(temp.substring(0, temp.lastIndexOf("/")));
         }
         File tempFile;
-        for (int i = list.size()-2; i >= 0; i--) {
+        for (int i = list.size() - 2; i >= 0; i--) {
             temp = list.get(i);
             tempFile = new File(temp);
             historyPathList.add(temp);

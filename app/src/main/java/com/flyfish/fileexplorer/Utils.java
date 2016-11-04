@@ -156,4 +156,29 @@ public class Utils {
     public static int dp2px(int dpSize, Context context) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpSize, context.getResources().getDisplayMetrics());
     }
+
+    public static void addIndex(ArrayList<String> indexList, int currentIndex) {
+        if (indexList == null) return;
+        if (indexList.contains(String.valueOf(currentIndex))) {
+            for (int index = 0; index < indexList.size(); index++) {
+                if (indexList.get(index).equals(String.valueOf(currentIndex))) {
+                    indexList.remove(index);
+                    break;
+                }
+            }
+        }
+        indexList.add(String.valueOf(currentIndex));
+    }
+
+    public static void removeIndex(ArrayList<String> indexList, int currentIndex) {
+        if (!indexList.contains(String.valueOf(currentIndex))) return;
+        if (indexList.contains(String.valueOf(currentIndex))) {
+            for (int index = 0; index < indexList.size(); index++) {
+                if (indexList.get(index).equals(String.valueOf(currentIndex))) {
+                    indexList.remove(index);
+                    return;
+                }
+            }
+        }
+    }
 }

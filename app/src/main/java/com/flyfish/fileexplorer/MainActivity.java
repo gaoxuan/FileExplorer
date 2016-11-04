@@ -9,24 +9,36 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements FileGridFragment.OnStateChangeListener {
+    private static final String[] FRAGMENT_TAG = new String[]{"WEB", "MAIN", "ROOT", "DOWNLOAD", "STORAGE", "SDCARD"};
 
     private DrawerLayout mDrawerLayout;
     private TextView mCategoryTV;
-    private FileGridFragment fileGridFragment;
+    private FragmentManager fragmentManager;
+    private ArrayList<Fragment> fragmentList;
+    private WebFragment webFragment;
+    private ArrayList<String> indexList;
+    private int currentIndex = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
         setContentView(R.layout.activity_main);
 
         initViews();
-        initFragment();
+        initFragments(savedInstanceState);
         initPath2NameMap();
     }
 
@@ -42,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
     protected void onResume() {
         super.onResume();
         readPreference();
+//        fragmentList.get(1).setCurrentPath(AppConstants.PATH_MAIN, getResources().getString(R.string.nav_local_main));
+//        fragmentList.get(2).setCurrentPath(AppConstants.PATH_ROOT, getResources().getString(R.string.nav_local_root));
+//        fragmentList.get(3).setCurrentPath(AppConstants.PATH_DOWNLOAD, getResources().getString(R.string.nav_local_download));
+//        fragmentList.get(4).setCurrentPath(AppConstants.PATH_STORAGE, getResources().getString(R.string.nav_local_storage));
+//        fragmentList.get(5).setCurrentPath(AppConstants.PATH_SDCARD, getResources().getString(R.string.nav_local_sdcard));
     }
 
     private void readPreference() {
@@ -50,23 +67,28 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
         String sortName = settings.getString(AppConstants.PREF_LIST_SORT_NAME, "1");
         String sortSize = settings.getString(AppConstants.PREF_LIST_SORT_SIZE, "1");
         Comparator<FileItemBean> comparator = getComparatorFromPref(sortTime, sortName, sortSize);
-        fileGridFragment.setComparator(comparator);
 
         String column = settings.getString(AppConstants.PREF_LIST_ICON_SIZE, "1");
+        int columnNum = 4;
         switch (column) {
             case "1":
-                fileGridFragment.setColumnNum(4);
+                columnNum = 4;
                 break;
             case "0":
-                fileGridFragment.setColumnNum(5);
+                columnNum = 5;
                 break;
             case "-1":
-                fileGridFragment.setColumnNum(6);
+                columnNum = 6;
                 break;
         }
 
         boolean showHideFile = settings.getBoolean(AppConstants.PREF_SWITCHER_ICON_SIZE, true);
-        fileGridFragment.showHideFiles(showHideFile);
+
+        for (int i = 1; i < fragmentList.size(); i++) {
+            ((FileGridFragment) fragmentList.get(i)).setComparator(comparator);
+            ((FileGridFragment) fragmentList.get(i)).setColumnNum(columnNum);
+            ((FileGridFragment) fragmentList.get(i)).showHideFiles(showHideFile);
+        }
     }
 
     private Comparator<FileItemBean> getComparatorFromPref(final String sortTime, final String sortName, String sortSize) {
@@ -129,15 +151,58 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
         Utils.initPath2NameMap(hashMap);
     }
 
-    private void initFragment() {
-        fileGridFragment =
-                (FileGridFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (fileGridFragment == null) {
-            // Create the fragment
-            fileGridFragment = FileGridFragment.newInstance(null);
-            Utils.addFragmentToActivity(
-                    getSupportFragmentManager(), fileGridFragment, R.id.contentFrame);
+    private void initFragments(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+            fragmentList = new ArrayList<>();
+            indexList = new ArrayList<>();
+            webFragment = new WebFragment();
+            FileGridFragment mainFragment = FileGridFragment.newInstance(null, AppConstants.PATH_MAIN);
+            FileGridFragment rootFragment = FileGridFragment.newInstance(null, AppConstants.PATH_ROOT);
+            FileGridFragment downloadFragment = FileGridFragment.newInstance(null, AppConstants.PATH_DOWNLOAD);
+            FileGridFragment storageFragment = FileGridFragment.newInstance(null, AppConstants.PATH_STORAGE);
+            FileGridFragment sdcardFragment = FileGridFragment.newInstance(null, AppConstants.PATH_SDCARD);
+
+            fragmentList.add(webFragment);
+            fragmentList.add(mainFragment);
+            fragmentList.add(rootFragment);
+            fragmentList.add(downloadFragment);
+            fragmentList.add(storageFragment);
+            fragmentList.add(sdcardFragment);
+            fragmentManager.beginTransaction().add(R.id.contentFrame, webFragment, FRAGMENT_TAG[0])
+                    .add(R.id.contentFrame, mainFragment, FRAGMENT_TAG[1]).add(R.id.contentFrame, rootFragment, FRAGMENT_TAG[2])
+                    .add(R.id.contentFrame, downloadFragment, FRAGMENT_TAG[3]).add(R.id.contentFrame, storageFragment, FRAGMENT_TAG[4])
+                    .add(R.id.contentFrame, sdcardFragment, FRAGMENT_TAG[5]).commitAllowingStateLoss();
+            showCurrentFragmentByIndex(1);
+            indexList.add(String.valueOf(1));
+        } else {
+            //TODO findFragmentByTag
+
         }
+        //        fileGridFragment =
+//                (FileGridFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+//        if (fileGridFragment == null) {
+//            // Create the fragment
+//            fileGridFragment = FileGridFragment.newInstance(null);
+//            Utils.addFragmentToActivity(
+//                    getSupportFragmentManager(), fileGridFragment, R.id.contentFrame);
+//        }
+    }
+
+    /**
+     * 根据下标值显示Fragment
+     *
+     * @param indexID [0, FRAGMENT_TAG.length)
+     */
+    private void showCurrentFragmentByIndex(int indexID) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        for (int i = 0; i < fragmentList.size(); i++) {
+            if (i == indexID)
+                transaction.show(fragmentList.get(i));
+            else
+                transaction.hide(fragmentList.get(i));
+        }
+        transaction.commitAllowingStateLoss();
     }
 
     private void initViews() {
@@ -258,35 +323,60 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
                                 startActivity(intent);
                                 break;
                             case R.id.web_navigation_menu_item:
-
+                                if (currentIndex == 0) {
+                                    mDrawerLayout.closeDrawers();
+                                    return true;
+                                }
+                                currentIndex = 0;
                                 break;
                             case R.id.main_local_navigation_menu_item:
-                                fileGridFragment.setCurrentPath(AppConstants.PATH_MAIN, menuItem.getTitle().toString());
+                                if (currentIndex == 1) {
+                                    mDrawerLayout.closeDrawers();
+                                    return true;
+                                }
+                                currentIndex = 1;
                                 break;
                             case R.id.root_local_navigation_menu_item:
-                                fileGridFragment.setCurrentPath(AppConstants.PATH_ROOT, menuItem.getTitle().toString());
+                                if (currentIndex == 2) {
+                                    mDrawerLayout.closeDrawers();
+                                    return true;
+                                }
+                                currentIndex = 2;
                                 break;
                             case R.id.download_local_navigation_menu_item:
-                                fileGridFragment.setCurrentPath(AppConstants.PATH_DOWNLOAD, menuItem.getTitle().toString());
+                                if (currentIndex == 3) {
+                                    mDrawerLayout.closeDrawers();
+                                    return true;
+                                }
+                                currentIndex = 3;
                                 break;
                             case R.id.storage_local_navigation_menu_item:
-                                fileGridFragment.setCurrentPath(AppConstants.PATH_STORAGE, menuItem.getTitle().toString());
+                                if (currentIndex == 4) {
+                                    mDrawerLayout.closeDrawers();
+                                    return true;
+                                }
+                                currentIndex = 4;
                                 break;
                             case R.id.sdcard_local_navigation_menu_item:
-                                fileGridFragment.setCurrentPath(AppConstants.PATH_SDCARD, menuItem.getTitle().toString());
+                                if (currentIndex == 5) {
+                                    mDrawerLayout.closeDrawers();
+                                    return true;
+                                }
+                                currentIndex = 5;
                                 break;
 
                             case R.id.bluetooth_network_navigation_menu_item:
-
                                 break;
                             case R.id.network_network_navigation_menu_item:
-
                                 break;
                             default:
                                 break;
                         }
                         // Close the navigation drawer when an item is selected.
 //                        menuItem.setChecked(true);
+//                        Utils.addIndex(indexList, currentIndex);
+                        indexList.add(String.valueOf(currentIndex));
+                        showCurrentFragmentByIndex(currentIndex);
                         mDrawerLayout.closeDrawers();
                         mCategoryTV.setText(menuItem.getTitle());
                         return true;
@@ -296,13 +386,27 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
 
     @Override
     public void onBackPressed() {
-        if (fileGridFragment.isSelecting())
-            fileGridFragment.cancelSelectState();
-        else if (fileGridFragment.hasOtherDir())
-            fileGridFragment.back2LastPath();
-        else if (fileGridFragment.isOperateState())
-            fileGridFragment.cancelSelectState();
-        else super.onBackPressed();
+        Logger.i("MainActivity onBackPressed:" + "currentIndex:" + indexList.get(indexList.size() - 1) + ", indexSize:" + indexList.size());
+
+        if (currentIndex == 0) {
+            indexList.remove(indexList.size() - 1);
+            currentIndex = Integer.parseInt(indexList.get(indexList.size() - 1));
+            showCurrentFragmentByIndex(currentIndex);
+        } else {
+            FileGridFragment fileGridFragment = (FileGridFragment) fragmentList.get(Integer.parseInt(indexList.get(indexList.size() - 1)));
+            if (fileGridFragment.isSelecting())
+                fileGridFragment.cancelSelectState();
+            else if (fileGridFragment.hasOtherDir())
+                fileGridFragment.back2LastPath();
+            else if (fileGridFragment.isOperateState())
+                fileGridFragment.cancelSelectState();
+            else if (indexList.size() > 1) {
+                indexList.remove(indexList.size() - 1);
+                currentIndex = Integer.parseInt(indexList.get(indexList.size() - 1));
+                showCurrentFragmentByIndex(currentIndex);
+            } else
+                super.onBackPressed();
+        }
     }
 
     @Override

@@ -7,4 +7,12 @@
     <color name="grey_500">#9E9E9E</color>
     <color name="grey_900">#212121</color>
 
+    <color name="search_et_bg">#FDFDFD</color>
+    <color name="search_bar_bg">#F2F2F3</color>
+    <color name="search_tv_hint">#C4C4C4</color>
+    <color name="search_tv">#444444</color>
+    <color name="setting_divider">#FFD4D4D4</color>
+    <color name="search_et">#444444</color>
+    <color name="search_et_stroke">#E6E7E7</color>
+    <color name="search_et_hint">#989898</color>
 </resources>
