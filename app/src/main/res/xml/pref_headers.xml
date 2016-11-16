@@ -7,6 +7,8 @@
         android:icon="@drawable/ic_show_chart_black_18dp"
         android:title="@string/pref_header_display" />
 
+
+
     <header
         android:fragment="com.flyfish.fileexplorer.SettingsActivity$SortFragment"
         android:icon="@drawable/ic_sort_by_alpha_black_18dp"
