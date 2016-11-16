@@ -12,6 +12,7 @@
 
     <style name="Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark">
         <item name="android:actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+
     </style>
 
     <style name="OverflowMenuStyle" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
@@ -23,5 +24,7 @@
         <item name="android:dropDownVerticalOffset">5dp</item>
         <!-- 弹出层水平方向上的偏移，即距离屏幕左边的距离，负值会导致右边出现空隙 -->
         <item name="android:dropDownHorizontalOffset">0dp</item>
+        <!--<item name="actionMenuTextColor">#000</item>-->
+        <!--<item name="android:color">#000</item>-->
     </style>
 </resources>
