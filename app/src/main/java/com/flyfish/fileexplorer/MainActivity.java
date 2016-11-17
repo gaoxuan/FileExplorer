@@ -229,32 +229,6 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
         ab.setTitle("");
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
-//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.action_pdf:
-//                        if (Utils.checkHasMatchApp(AppConstants.APP_PACKAGE_PDF, MainActivity.this))
-//                            openAPP(AppConstants.APP_PACKAGE_PDF, AppConstants.APP_CLASS_PDF);
-//                        else
-//                            alert("北极星Office", AppConstants.APP_PACKAGE_PDF);
-//                        break;
-//                    case R.id.action_png:
-//                        if (Utils.checkHasMatchApp(AppConstants.APP_PACKAGE_PNG, MainActivity.this))
-//                            openAPP(AppConstants.APP_PACKAGE_PNG, AppConstants.APP_CLASS_PNG);
-//                        else
-//                            alert("涂画", AppConstants.APP_PACKAGE_PNG);
-//                        break;
-//                    case R.id.action_png_write:
-//                        if (Utils.checkHasMatchApp(AppConstants.APP_PACKAGE_PNG_WRITE, MainActivity.this))
-//                            openAPP(AppConstants.APP_PACKAGE_PNG_WRITE, AppConstants.APP_CLASS_PNG_WRITE);
-//                        else
-//                            alert("MetaMoji", AppConstants.APP_PACKAGE_PNG_WRITE);
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
     }
 
     private void openAPP(String packageName, String className) {
@@ -295,12 +269,10 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
         // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_main, menu);
         SubMenu subMenu = menu.addSubMenu("");
-        subMenu.add(getResources().getString(R.string.action_pdf)).setIcon(R.mipmap.ic_action_pdf).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
-        {
+        subMenu.add(getResources().getString(R.string.action_pdf)).setIcon(R.mipmap.ic_action_pdf).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
-            public boolean onMenuItemClick(MenuItem item)
-            {
+            public boolean onMenuItemClick(MenuItem item) {
                 if (Utils.checkHasMatchApp(AppConstants.APP_PACKAGE_PDF, MainActivity.this))
                     openAPP(AppConstants.APP_PACKAGE_PDF, AppConstants.APP_CLASS_PDF);
                 else
@@ -308,12 +280,10 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
                 return true;
             }
         });
-        subMenu.add(getResources().getString(R.string.action_png)).setIcon(R.mipmap.ic_action_png).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
-        {
+        subMenu.add(getResources().getString(R.string.action_png)).setIcon(R.mipmap.ic_action_png).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
-            public boolean onMenuItemClick(MenuItem item)
-            {
+            public boolean onMenuItemClick(MenuItem item) {
                 if (Utils.checkHasMatchApp(AppConstants.APP_PACKAGE_PNG, MainActivity.this))
                     openAPP(AppConstants.APP_PACKAGE_PNG, AppConstants.APP_CLASS_PNG);
                 else
@@ -321,12 +291,10 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
                 return true;
             }
         });
-        subMenu.add(getResources().getString(R.string.action_png_write)).setIcon(R.mipmap.ic_action_png_write).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
-        {
+        subMenu.add(getResources().getString(R.string.action_png_write)).setIcon(R.mipmap.ic_action_png_write).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
-            public boolean onMenuItemClick(MenuItem item)
-            {
+            public boolean onMenuItemClick(MenuItem item) {
                 if (Utils.checkHasMatchApp(AppConstants.APP_PACKAGE_PNG_WRITE, MainActivity.this))
                     openAPP(AppConstants.APP_PACKAGE_PNG_WRITE, AppConstants.APP_CLASS_PNG_WRITE);
                 else
