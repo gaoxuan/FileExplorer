@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.setting_navigation_menu_item:
-                                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                Intent intent = new Intent(MainActivity.this, SimpleSettingActivity.class);
                                 startActivity(intent);
                                 break;
                             case R.id.web_navigation_menu_item:
