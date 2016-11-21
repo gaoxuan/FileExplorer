@@ -19,19 +19,20 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                app:theme="@style/Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
-                android:minHeight="?attr/actionBarSize">
+                android:minHeight="?attr/actionBarSize"
+                app:theme="@style/Toolbar">
+
                 <TextView
                     android:id="@+id/tv_main_category"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
+                    android:text="@string/nav_local_main"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:text="@string/nav_local_main"/>
+                    android:textSize="18sp" />
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -50,13 +51,11 @@
     </LinearLayout>
 
     <!-- Navigation Drawer -->
-    <android.support.design.widget.NavigationView
+    <fragment
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:name="com.flyfish.fileexplorer.NavigationFragment"
+        android:layout_width="@dimen/nav_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:visibility="visible"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_actions" />
+        tools:layout="@layout/fragment_nav_list" />
 </android.support.v4.widget.DrawerLayout>

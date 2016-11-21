@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="220dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_white_corner"
+    android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="20dp"
-    android:orientation="vertical">
+    android:paddingRight="10dp">
 
     <TextView
-        android:id="@+id/tv_dialog_content"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:alpha="0.8"
+        android:text="新建"
         android:textColor="@color/grey_900"
-        android:textSize="16sp"
-        android:text="重命名" />
+        android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/et_dialog_name"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:textSize="16sp"
-        android:textColor="@color/grey_900"
-        android:text="新建文件夹"
-        android:layout_height="wrap_content" />
-</FrameLayout>
+        android:layout_height="0.5dp"
+        android:alpha="0.5"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/tv_dialog_newfolder_file"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:text="文件"
+        android:textColor="@color/grey_500"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:alpha="0.5"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/tv_dialog_newfolder_folder"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:text="文件夹"
+        android:textColor="@color/grey_500"
+        android:textSize="16sp" />
+</LinearLayout>

@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#2196F3</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="white">#fff</color>
+    <color name="blur">#00BFFF</color>
+    <color name="blur_dark">#1C86EE</color>
+
     <color name="grey_500">#9E9E9E</color>
     <color name="grey_900">#212121</color>
 

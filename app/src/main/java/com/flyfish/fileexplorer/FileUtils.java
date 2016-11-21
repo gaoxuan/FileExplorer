@@ -247,4 +247,19 @@ public class FileUtils {
         }
         return true;
     }
+
+    public static boolean createNewFile(String path, String name) {
+        Logger.i("TAG createNewFolder path:" + path);
+        File file = new File(path, name);
+        try {
+            if (!file.exists())
+                file.createNewFile();
+            else
+                return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

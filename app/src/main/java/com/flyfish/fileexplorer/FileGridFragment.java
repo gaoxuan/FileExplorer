@@ -1,7 +1,9 @@
 package com.flyfish.fileexplorer;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -213,49 +216,72 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
     private void fileSearch() {
         Intent intent = new Intent(getActivity(), SearchActivity.class);
         startActivity(intent);
-//        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
-//        dialog.setTitle("搜索");
-//        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_newfolder, null);
-//        final EditText contentET = (EditText) view.findViewById(R.id.et_dialog_name);
-//        TextView textView = (TextView) view.findViewById(R.id.tv_dialog_content);
-//        textView.setText("请输入搜索内容");
-//        contentET.setText("");
-//        dialog.setView(view);
-//        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                Toast.makeText(getActivity(), "搜索", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        dialog.show();
     }
 
     private void fileNewFolder() {
         if (folderDialog == null) {
+            TextView fileTV, folderTV;
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_newfolder, null);
-            final EditText nameET = (EditText) view.findViewById(R.id.et_dialog_name);
-            Selection.setSelection(nameET.getText(), nameET.getText().toString().length());
+            fileTV = (TextView) view.findViewById(R.id.tv_dialog_newfolder_file);
+            folderTV = (TextView) view.findViewById(R.id.tv_dialog_newfolder_folder);
             folderDialog = new AlertDialog.Builder(getActivity()).create();
-            folderDialog.setTitle("新建文件夹");
             folderDialog.setView(view);
-            folderDialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+            fileTV.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    boolean result = FileUtils.createNewFolder(currentPath + File.separator + nameET.getText().toString());
-                    if (result)
-                        updateFileList();
-                    else
-                        Toast.makeText(getActivity(), "抱歉，操作失败", Toast.LENGTH_SHORT).show();
+                public void onClick(View v) {
+                    folderDialog.dismiss();
+                    createDialog(true);
+                }
+            });
+            folderTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    folderDialog.dismiss();
+                    createDialog(false);
                 }
             });
         }
         folderDialog.show();
+    }
+
+    private void createDialog(final boolean isFile) {
+        TextView confirmTV, cancelTV;
+        final EditText nameET;
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_newfolder_create, null);
+        confirmTV = (TextView) view.findViewById(R.id.tv_dialog_newfolder_confirm);
+        cancelTV = (TextView) view.findViewById(R.id.tv_dialog_newfolder_cancel);
+        nameET = (EditText) view.findViewById(R.id.et_dialog_newfolder_name);
+        nameET.setFocusable(true);
+        nameET.setFocusableInTouchMode(true);
+        nameET.requestFocus();
+        InputMethodManager inputManager =
+                (InputMethodManager) nameET.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.showSoftInput(nameET, 0);
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+        dialog.setView(view);
+        confirmTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean result = false;
+                if (isFile) {
+                    result = FileUtils.createNewFile(currentPath, nameET.getText().toString());
+                } else {
+                    result = FileUtils.createNewFolder(currentPath + File.separator + nameET.getText().toString());
+                }
+                if (result) {
+                    updateFileList();
+                    dialog.dismiss();
+                } else
+                    Toast.makeText(getActivity(), isFile ? "文件已存在" : "文件夹已存在", Toast.LENGTH_SHORT).show();
+            }
+        });
+        cancelTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void filePaste() {

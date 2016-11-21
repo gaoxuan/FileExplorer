@@ -2,13 +2,13 @@ package com.flyfish.fileexplorer;
 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,9 +18,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -215,10 +217,73 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
     private void initDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-        }
+        mDrawerLayout.closeDrawers();
+        NavigationFragment fragment = (NavigationFragment) getSupportFragmentManager().findFragmentById(R.id.nav_view);
+        fragment.setOnNavigationItemClickListener(new NavigationFragment.OnNavigationItemClickListener() {
+            @Override
+            public void onNavItemClick(int id) {
+                String title = null;
+                switch (id) {
+                    case R.id.ll_nav_setting:
+                        title = getResources().getString(R.string.nav_setting);
+                        Intent intent = new Intent(MainActivity.this, SimpleSettingActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.ll_nav_web:
+                        title = getResources().getString(R.string.nav_web);
+                        if (currentIndex == 0) {
+                            mDrawerLayout.closeDrawers();
+                        }
+                        currentIndex = 0;
+                        break;
+                    case R.id.ll_nav_main:
+                        title = getResources().getString(R.string.nav_local_main);
+                        if (currentIndex == 1) {
+                            mDrawerLayout.closeDrawers();
+                        }
+                        currentIndex = 1;
+                        break;
+                    case R.id.ll_nav_root:
+                        title = getResources().getString(R.string.nav_local_root);
+                        if (currentIndex == 2) {
+                            mDrawerLayout.closeDrawers();
+                        }
+                        currentIndex = 2;
+                        break;
+                    case R.id.ll_nav_download:
+                        title = getResources().getString(R.string.nav_local_download);
+                        if (currentIndex == 3) {
+                            mDrawerLayout.closeDrawers();
+                        }
+                        currentIndex = 3;
+                        break;
+                    case R.id.ll_nav_storage:
+                        title = getResources().getString(R.string.nav_local_storage);
+                        if (currentIndex == 4) {
+                            mDrawerLayout.closeDrawers();
+                        }
+                        currentIndex = 4;
+                        break;
+                    case R.id.ll_nav_sdcard:
+                        title = getResources().getString(R.string.nav_local_sdcard);
+                        if (currentIndex == 5) {
+                            mDrawerLayout.closeDrawers();
+                        }
+                        currentIndex = 5;
+                        break;
+                    case R.id.ll_nav_network:
+
+                        break;
+                    case R.id.ll_nav_bluetooth:
+
+                        break;
+                }
+                indexList.add(String.valueOf(currentIndex));
+                showCurrentFragmentByIndex(currentIndex);
+                mDrawerLayout.closeDrawers();
+                mCategoryTV.setText(title);
+            }
+        });
     }
 
     private void initToolBar() {
@@ -317,89 +382,21 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
             case android.R.id.home:
                 // Open the navigation drawer when the home icon is selected from the toolbar.
                 mDrawerLayout.openDrawer(GravityCompat.START);
+                ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).
+                        hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.setting_navigation_menu_item:
-                                Intent intent = new Intent(MainActivity.this, SimpleSettingActivity.class);
-                                startActivity(intent);
-                                break;
-                            case R.id.web_navigation_menu_item:
-                                if (currentIndex == 0) {
-                                    mDrawerLayout.closeDrawers();
-                                    return true;
-                                }
-                                currentIndex = 0;
-                                break;
-                            case R.id.main_local_navigation_menu_item:
-                                if (currentIndex == 1) {
-                                    mDrawerLayout.closeDrawers();
-                                    return true;
-                                }
-                                currentIndex = 1;
-                                break;
-                            case R.id.root_local_navigation_menu_item:
-                                if (currentIndex == 2) {
-                                    mDrawerLayout.closeDrawers();
-                                    return true;
-                                }
-                                currentIndex = 2;
-                                break;
-                            case R.id.download_local_navigation_menu_item:
-                                if (currentIndex == 3) {
-                                    mDrawerLayout.closeDrawers();
-                                    return true;
-                                }
-                                currentIndex = 3;
-                                break;
-                            case R.id.storage_local_navigation_menu_item:
-                                if (currentIndex == 4) {
-                                    mDrawerLayout.closeDrawers();
-                                    return true;
-                                }
-                                currentIndex = 4;
-                                break;
-                            case R.id.sdcard_local_navigation_menu_item:
-                                if (currentIndex == 5) {
-                                    mDrawerLayout.closeDrawers();
-                                    return true;
-                                }
-                                currentIndex = 5;
-                                break;
-
-                            case R.id.bluetooth_network_navigation_menu_item:
-                                break;
-                            case R.id.network_network_navigation_menu_item:
-                                break;
-                            default:
-                                break;
-                        }
-                        // Close the navigation drawer when an item is selected.
-//                        menuItem.setChecked(true);
-//                        Utils.addIndex(indexList, currentIndex);
-                        indexList.add(String.valueOf(currentIndex));
-                        showCurrentFragmentByIndex(currentIndex);
-                        mDrawerLayout.closeDrawers();
-                        mCategoryTV.setText(menuItem.getTitle());
-                        return true;
-                    }
-                });
-    }
-
     @Override
     public void onBackPressed() {
         Logger.i("MainActivity onBackPressed:" + "currentIndex:" + indexList.get(indexList.size() - 1) + ", indexSize:" + indexList.size());
 
-        if (currentIndex == 0) {
+        if (mDrawerLayout.isDrawerOpen(Gravity.START))
+            mDrawerLayout.closeDrawers();
+        else if (currentIndex == 0) {
             indexList.remove(indexList.size() - 1);
             currentIndex = Integer.parseInt(indexList.get(indexList.size() - 1));
             showCurrentFragmentByIndex(currentIndex);
@@ -428,4 +425,5 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
     public void onDirChanged(String path) {
         mCategoryTV.setText(path);
     }
+
 }
