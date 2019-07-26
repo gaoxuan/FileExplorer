@@ -111,6 +111,7 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         FileGridFragment fragment = new FileGridFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_COMPARATOR, (Serializable) comparator);
+        bundle.putString(ARG_CURRENTPATH, path);
         fragment.setArguments(bundle);
         return fragment;
     }
