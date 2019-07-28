@@ -1,17 +1,24 @@
 package com.flyfish.fileexplorer;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -24,6 +31,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 
@@ -33,6 +41,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements FileGridFragment.OnStateChangeListener {
     private static final String[] FRAGMENT_TAG = new String[]{"WEB", "MAIN", "ROOT", "DOWNLOAD", "STORAGE", "SDCARD"};
+    private static final int REQUEST_CODE_ASK_EXTERNAL_STORAGE = 1;
 
     private DrawerLayout mDrawerLayout;
     private TextView mCategoryTV;
@@ -50,17 +59,24 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
         initViews();
         initFragments(savedInstanceState);
         initPath2NameMap();
+
+        requestNecessaryPermission();
+    }
+
+    private void requestNecessaryPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_EXTERNAL_STORAGE);
+            }
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         readPreference();
-//        fragmentList.get(1).setCurrentPath(AppConstants.PATH_MAIN, getResources().getString(R.string.nav_local_main));
-//        fragmentList.get(2).setCurrentPath(AppConstants.PATH_ROOT, getResources().getString(R.string.nav_local_root));
-//        fragmentList.get(3).setCurrentPath(AppConstants.PATH_DOWNLOAD, getResources().getString(R.string.nav_local_download));
-//        fragmentList.get(4).setCurrentPath(AppConstants.PATH_STORAGE, getResources().getString(R.string.nav_local_storage));
-//        fragmentList.get(5).setCurrentPath(AppConstants.PATH_SDCARD, getResources().getString(R.string.nav_local_sdcard));
     }
 
     private void readPreference() {
@@ -327,6 +343,40 @@ public class MainActivity extends AppCompatActivity implements FileGridFragment.
             }
         });
         alert.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("该应用使用需要“写入文件权限”，请到 “应用信息 -> 权限” 中授予！");
+                    builder.setPositiveButton("去手动授权", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            intent.addCategory(Intent.CATEGORY_DEFAULT);
+                            intent.setData(Uri.parse("package:" + getPackageName()));
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("取消", null);
+                    builder.show();
+                }
+
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

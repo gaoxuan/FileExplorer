@@ -642,13 +642,6 @@ public class FileGridFragment extends Fragment implements View.OnClickListener {
         dialog.show();
     }
 
-    public void setCurrentPath(String path, String name) {
-        currentPath = path;
-        pathList.add(name);
-        updateFileList();
-        initHistoryScrollViewPath(currentPath);
-    }
-
     public void back2LastPath() {
         pathList.remove(pathList.size() - 1);
         currentPath = pathList.get(pathList.size() - 1);
