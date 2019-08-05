@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.flyfish.fileexplorer.PathHorizontalScrollView
+    <com.gx.fileexplorer.PathHorizontalScrollView
         android:id="@+id/scrollview"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:scrollbars="none"
         android:layout_alignBottom="@+id/ll_fragment_operate"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/ll_fragment_operate"></com.flyfish.fileexplorer.PathHorizontalScrollView>
+        android:layout_toLeftOf="@+id/ll_fragment_operate"></com.gx.fileexplorer.PathHorizontalScrollView>
 
     <LinearLayout
         android:id="@+id/ll_fragment_operate"

@@ -1,4 +1,4 @@
-package com.flyfish.fileexplorer;
+package com.gx.fileexplorer;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
@@ -31,7 +31,6 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 

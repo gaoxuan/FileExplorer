@@ -1,4 +1,4 @@
-package com.flyfish.fileexplorer;
+package com.gx.fileexplorer;
 
 import android.content.Context;
 import android.content.SharedPreferences;

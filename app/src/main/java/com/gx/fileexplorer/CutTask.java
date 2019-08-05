@@ -1,26 +1,31 @@
-package com.flyfish.fileexplorer;
+package com.gx.fileexplorer;
 
 import android.os.Handler;
 import android.os.Process;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by gaoxuan on 2016/10/8.
+ * Created by gaoxuan on 2016/10/20.
  */
-public class CopyTask implements Task<Integer> {
+public class CutTask implements Task<Integer> {
     private static AtomicInteger mCount = new AtomicInteger(0);
     private List<String> oldFileList;
     private String newPath;
     private Handler handler;
 
-    public CopyTask(List<String> oldFileList, String newPath, Handler handler) {
+    public CutTask(List<String> oldFileList, String newPath, Handler handler) {
         this.oldFileList = oldFileList;
         this.newPath = newPath;
         this.handler = handler;
+    }
+
+    @Override
+    public String getTaskName() {
+        return "cut-task-" + mCount.incrementAndGet();
     }
 
     @Override
@@ -30,14 +35,9 @@ public class CopyTask implements Task<Integer> {
         String temp;
         while (it.hasNext()) {
             temp = it.next();
-            FileUtils.copy(temp, newPath);
+            FileUtils.move(temp, newPath + File.separator + temp.substring(temp.lastIndexOf(File.separator)));
         }
-        handler.sendEmptyMessage(AppConstants.MSG_COPY_OK);
+        handler.sendEmptyMessage(AppConstants.MSG_CUT_OK);
         return null;
-    }
-
-    @Override
-    public String getTaskName() {
-        return "copy-task-" + mCount.incrementAndGet();
     }
 }

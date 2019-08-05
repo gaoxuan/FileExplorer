@@ -1,7 +1,6 @@
-package com.flyfish.fileexplorer;
+package com.gx.fileexplorer;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,7 +13,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.text.Selection;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

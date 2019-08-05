@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId "com.flyfish.fileexplorer"
+        applicationId "com.gx.fileexplorer"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 3

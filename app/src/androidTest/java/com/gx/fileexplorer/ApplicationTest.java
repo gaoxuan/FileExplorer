@@ -1,4 +1,4 @@
-package com.flyfish.fileexplorer;
+package com.gx.fileexplorer;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,10 +1,8 @@
-package com.flyfish.fileexplorer;
+package com.gx.fileexplorer;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
 
 /**
  * Created by gaoxuan on 2016/11/20.
