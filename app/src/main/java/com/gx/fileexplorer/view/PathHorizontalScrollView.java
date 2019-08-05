@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,6 +12,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.gx.fileexplorer.R;
+import com.gx.fileexplorer.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

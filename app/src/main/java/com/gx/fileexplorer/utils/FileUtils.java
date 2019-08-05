@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.utils;
 
 import android.os.Environment;
 

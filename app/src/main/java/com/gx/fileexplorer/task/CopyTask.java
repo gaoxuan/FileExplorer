@@ -1,7 +1,10 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.task;
 
 import android.os.Handler;
 import android.os.Process;
+
+import com.gx.fileexplorer.AppConstants;
+import com.gx.fileexplorer.utils.FileUtils;
 
 import java.util.Iterator;
 import java.util.List;

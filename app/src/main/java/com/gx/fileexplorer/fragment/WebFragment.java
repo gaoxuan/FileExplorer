@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.gx.fileexplorer.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

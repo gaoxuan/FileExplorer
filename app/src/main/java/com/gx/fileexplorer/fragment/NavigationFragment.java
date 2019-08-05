@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.gx.fileexplorer.R;
 
 /**
  * Created by gaoxuan on 2016/11/21.

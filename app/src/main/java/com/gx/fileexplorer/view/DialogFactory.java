@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.view;
 
 import android.app.Dialog;
 import android.content.Context;

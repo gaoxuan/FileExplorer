@@ -1,8 +1,10 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.gx.fileexplorer.R;
 
 /**
  * Created by gaoxuan on 2016/11/5.

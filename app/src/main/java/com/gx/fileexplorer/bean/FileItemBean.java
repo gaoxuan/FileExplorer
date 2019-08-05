@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.bean;
 
 import android.graphics.drawable.Drawable;
 

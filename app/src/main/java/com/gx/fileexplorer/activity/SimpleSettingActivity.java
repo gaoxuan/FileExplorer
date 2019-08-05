@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.activity;
 
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -6,6 +6,8 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+
+import com.gx.fileexplorer.R;
 
 /**
  * Created by gaoxuan on 2016/11/18.

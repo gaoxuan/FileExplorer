@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.activity;
 
 
 import android.annotation.TargetApi;
@@ -13,6 +13,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+
+import com.gx.fileexplorer.R;
 
 import java.util.List;
 

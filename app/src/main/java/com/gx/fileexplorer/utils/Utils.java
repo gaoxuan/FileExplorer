@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
+
+import com.gx.fileexplorer.AppConstants;
+import com.gx.fileexplorer.bean.FileItemBean;
+import com.gx.fileexplorer.R;
 
 import java.io.File;
 import java.util.ArrayList;

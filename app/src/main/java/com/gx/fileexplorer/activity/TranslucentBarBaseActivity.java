@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.activity;
 
 import android.os.Build;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.fragment;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -26,6 +26,21 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gx.fileexplorer.AppConstants;
+import com.gx.fileexplorer.task.Client;
+import com.gx.fileexplorer.task.CopyTask;
+import com.gx.fileexplorer.task.CutTask;
+import com.gx.fileexplorer.task.Executable;
+import com.gx.fileexplorer.adapter.FileGridAdapter;
+import com.gx.fileexplorer.bean.FileItemBean;
+import com.gx.fileexplorer.utils.FileUtils;
+import com.gx.fileexplorer.view.PathHorizontalScrollView;
+import com.gx.fileexplorer.R;
+import com.gx.fileexplorer.task.Task;
+import com.gx.fileexplorer.utils.Utils;
+import com.gx.fileexplorer.activity.MainActivity;
+import com.gx.fileexplorer.activity.SearchActivity;
 
 import java.io.File;
 import java.io.Serializable;

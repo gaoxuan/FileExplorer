@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.task;
 
 import java.util.concurrent.Callable;
 

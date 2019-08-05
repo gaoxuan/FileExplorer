@@ -2,6 +2,8 @@ package com.gx.fileexplorer;
 
 import android.os.Environment;
 
+import com.gx.fileexplorer.utils.FileUtils;
+
 /**
  * Created by gaoxuan on 2016/10/1.
  */

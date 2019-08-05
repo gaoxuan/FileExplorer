@@ -1,4 +1,4 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.activity;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
@@ -32,6 +32,13 @@ import android.view.SubMenu;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.gx.fileexplorer.AppConstants;
+import com.gx.fileexplorer.fragment.FileGridFragment;
+import com.gx.fileexplorer.bean.FileItemBean;
+import com.gx.fileexplorer.fragment.NavigationFragment;
+import com.gx.fileexplorer.R;
+import com.gx.fileexplorer.utils.Utils;
+import com.gx.fileexplorer.fragment.WebFragment;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;

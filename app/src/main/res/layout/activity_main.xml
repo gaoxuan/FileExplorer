@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gx.fileexplorer.MainActivity"
+    tools:context="com.gx.fileexplorer.activity.MainActivity"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -53,7 +53,7 @@
     <!-- Navigation Drawer -->
     <fragment
         android:id="@+id/nav_view"
-        android:name="com.gx.fileexplorer.NavigationFragment"
+        android:name="com.gx.fileexplorer.fragment.NavigationFragment"
         android:layout_width="@dimen/nav_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"

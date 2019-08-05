@@ -1,6 +1,8 @@
-package com.gx.fileexplorer;
+package com.gx.fileexplorer.task;
 
 import android.util.Log;
+
+import com.gx.fileexplorer.AppConstants;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;

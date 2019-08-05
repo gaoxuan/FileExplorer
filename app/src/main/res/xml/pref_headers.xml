@@ -3,17 +3,17 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.gx.fileexplorer.SettingsActivity$DisplayFragment"
+        android:fragment="com.gx.fileexplorer.activity.SettingsActivity$DisplayFragment"
         android:icon="@drawable/ic_show_chart_black_18dp"
         android:title="@string/pref_header_display" />
 
     <header
-        android:fragment="com.gx.fileexplorer.SettingsActivity$SortFragment"
+        android:fragment="com.gx.fileexplorer.activity.SettingsActivity$SortFragment"
         android:icon="@drawable/ic_sort_by_alpha_black_18dp"
         android:title="@string/pref_header_sort" />
 
     <header
-        android:fragment="com.gx.fileexplorer.SettingsActivity$AboutFragment"
+        android:fragment="com.gx.fileexplorer.activity.SettingsActivity$AboutFragment"
         android:icon="@drawable/ic_info_black_18dp"
         android:title="@string/pref_header_about" />
 
